@@ -65,7 +65,7 @@ export function RegisterForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 w-full max-w-lg", className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl text-center font-bold">注册</CardTitle>
