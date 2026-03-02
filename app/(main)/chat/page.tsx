@@ -27,7 +27,7 @@ export default function ChatPage() {
     router.push(`/chat/${convo.id}`);
   };
 
-  const handleSend = async (content: string) => {
+  const handleSend = async (content: string, _model?: string) => {
     const convo = await createConversation(
       content.slice(0, 50),
       selectedKbId || undefined

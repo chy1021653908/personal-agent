@@ -1,6 +1,5 @@
 import { streamText } from "ai";
 import { requireSession } from "@/lib/auth-utils";
-import { getModel } from "@/lib/ai/providers";
 import { buildSystemPrompt, formatSourcesForMessage } from "@/lib/ai/prompts";
 import { retrieve } from "@/lib/rag/retriever";
 import { db } from "@/lib/db";
@@ -14,7 +13,6 @@ export async function POST(request: Request) {
     const {
       messages: clientMessages,
       conversationId,
-      provider = "openai",
       model: modelName,
     } = await request.json();
 
@@ -81,7 +79,6 @@ export async function POST(request: Request) {
     }
 
     const systemPrompt = buildSystemPrompt(retrievalResults);
-    const aiModel = getModel(provider, modelName);
 
     const coreMessages = clientMessages.map(
       (m: { role: string; content?: string; parts?: Array<{ type: string; text?: string }> }) => ({
@@ -97,7 +94,7 @@ export async function POST(request: Request) {
     );
 
     const result = streamText({
-      model: aiModel,
+      model: modelName,
       system: systemPrompt,
       messages: coreMessages,
       async onFinish({ text }) {

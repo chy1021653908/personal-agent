@@ -83,8 +83,19 @@ export default function ChatDetailPage() {
     );
   };
 
-  const handleSend = (content: string) => {
-    sendMessage({ text: content });
+  const handleSend = (content: string, model?: string) => {
+    if (model) {
+      sendMessage(
+        { text: content },
+        {
+          body: {
+            model,
+          },
+        }
+      );
+    } else {
+      sendMessage({ text: content });
+    }
   };
 
   return (
