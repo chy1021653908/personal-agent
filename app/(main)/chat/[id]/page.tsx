@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import { ChatSidebar } from "@/components/chat/chat-sidebar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ChatMessages } from "@/components/chat/chat-messages";
 import { ChatInput } from "@/components/chat/chat-input";
 import { ScopeSelector } from "@/components/knowledge/scope-selector";
@@ -12,14 +15,15 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useKnowledgeBases } from "@/hooks/use-knowledge-base";
 import type { Message as StoredMessage, Conversation } from "@/types";
 import type { UIMessage } from "ai";
+import { useEffect, useState, useMemo } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 
 export default function ChatDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const {
-    conversations,
-    createConversation,
-    deleteConversation,
     updateConversation,
   } = useConversations();
   const { knowledgeBases } = useKnowledgeBases();
@@ -99,25 +103,25 @@ export default function ChatDetailPage() {
   };
 
   return (
-    <div className="flex h-full">
-      <ChatSidebar
-        conversations={conversations}
-        onNewChat={async () => {
-          const convo = await createConversation();
-          router.push(`/chat/${convo.id}`);
-        }}
-        onDelete={async (convoId) => {
-          await deleteConversation(convoId);
-          if (convoId === id) router.push("/chat");
-        }}
-      />
-      <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col h-full overflow-hidden">
+      <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="mr-2 h-4" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage>Chat</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </header>
+      <div className="flex flex-1 flex-col overflow-hidden min-h-0">
         <ChatMessages
           messages={messages}
           storedMessages={conversationData?.messages}
           isLoading={isLoading}
         />
-        <div className="px-4 pb-1">
+        <div className="px-4 pb-1 shrink-0">
           <div className="mx-auto max-w-3xl">
             <ScopeSelector
               knowledgeBases={knowledgeBases}
@@ -126,7 +130,9 @@ export default function ChatDetailPage() {
             />
           </div>
         </div>
-        <ChatInput onSend={handleSend} isLoading={isLoading} />
+        <div className="shrink-0">
+          <ChatInput onSend={handleSend} isLoading={isLoading} />
+        </div>
       </div>
     </div>
   );

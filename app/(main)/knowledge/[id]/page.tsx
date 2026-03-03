@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { KbSidebar } from "@/components/knowledge/kb-sidebar";
 import { FolderTree } from "@/components/knowledge/folder-tree";
 import { FileGrid } from "@/components/knowledge/file-grid";
 import { FileUploadDialog } from "@/components/knowledge/file-upload-dialog";
@@ -15,11 +14,20 @@ import {
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default function KnowledgeBaseDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const router = useRouter();
-  const { knowledgeBases, createKnowledgeBase, deleteKnowledgeBase } =
+  const { knowledgeBases } =
     useKnowledgeBases();
   const { folders, createFolder } = useFolders(id);
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
@@ -66,23 +74,25 @@ export default function KnowledgeBaseDetailPage() {
   };
 
   return (
-    <div className="flex h-full">
-      <KbSidebar
-        knowledgeBases={knowledgeBases}
-        selectedId={id}
-        onSelect={(kbId) => router.push(`/knowledge/${kbId}`)}
-        onCreate={async (name, description) => {
-          const kb = await createKnowledgeBase(name, description);
-          router.push(`/knowledge/${kb.id}`);
-        }}
-        onDelete={async (kbId) => {
-          await deleteKnowledgeBase(kbId);
-          if (kbId === id) router.push("/knowledge");
-        }}
-      />
+    <div className="flex flex-col h-full overflow-hidden">
+      <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="mr-2 h-4" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/knowledge">知识库</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{currentKb?.name || "加载中..."}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </header>
 
-      <div className="flex flex-1 flex-col">
-        <div className="flex items-center justify-between border-b px-6 py-3">
+      <div className="flex flex-1 flex-col overflow-hidden min-h-0">
+        <div className="flex items-center justify-between border-b px-6 py-3 shrink-0">
           <div>
             <h1 className="text-lg font-semibold">
               {currentKb?.name || "知识库"}
@@ -99,7 +109,7 @@ export default function KnowledgeBaseDetailPage() {
           </Button>
         </div>
 
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden min-h-0">
           <div className="w-48 border-r p-3 overflow-auto">
             <FolderTree
               folders={folders}
@@ -121,10 +131,12 @@ export default function KnowledgeBaseDetailPage() {
         </div>
 
         {currentKb && (
-          <KbChatBar
-            knowledgeBaseId={id}
-            knowledgeBaseName={currentKb.name}
-          />
+          <div className="shrink-0">
+             <KbChatBar
+                knowledgeBaseId={id}
+                knowledgeBaseName={currentKb.name}
+             />
+          </div>
         )}
       </div>
 
