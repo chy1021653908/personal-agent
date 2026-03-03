@@ -1,13 +1,8 @@
 "use client";
 
-import { Bot, Loader2 } from "lucide-react";
+import { Bot } from "lucide-react";
 import type { UIMessage } from "ai";
 import type { Source } from "@/types";
-import {
-  Conversation,
-  ConversationContent,
-  ConversationScrollButton,
-} from "@/components/ai-elements/conversation";
 import {
   Message,
   MessageContent,
@@ -18,6 +13,12 @@ import {
   ReasoningContent,
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
+import { useMemo } from "react";
 
 interface StoredMessage {
   id: string;
@@ -63,34 +64,82 @@ export function ChatMessages({
   storedMessages,
   isLoading,
 }: ChatMessagesProps) {
-  const displayMessages: Array<{
-    id: string;
-    role: "user" | "assistant";
-    content: string;
-    reasoning?: string;
-    sources?: Source[] | null;
-  }> =
-    messages.length > 0
-      ? messages.map((m) => {
-          const { text, reasoning } = extractFromUIMessage(m);
-          return {
+  const displayMessages = useMemo<
+    Array<{
+      id: string;
+      role: "user" | "assistant";
+      content: string;
+      reasoning?: string;
+      sources?: Source[] | null;
+    }>
+  >(
+    () => {
+      type DisplayMessage = {
+        id: string;
+        role: "user" | "assistant";
+        content: string;
+        reasoning?: string;
+        sources?: Source[] | null;
+      };
+
+      const stored: DisplayMessage[] =
+        storedMessages
+          ?.filter(
+            (m): m is StoredMessage & { role: "user" | "assistant" } =>
+              m.role === "user" || m.role === "assistant"
+          )
+          .map((m) => ({
             id: m.id,
-            role: m.role as "user" | "assistant",
-            content: text,
-            reasoning,
-          };
-        })
-      : (storedMessages?.filter(
-          (m): m is StoredMessage & { role: "user" | "assistant" } =>
-            m.role === "user" || m.role === "assistant"
-        ) ?? []);
+            role: m.role,
+            content: m.content,
+            sources: m.sources ?? null,
+          })) ?? [];
+
+      const live: DisplayMessage[] = messages.map((m) => {
+        const { text, reasoning } = extractFromUIMessage(m);
+        return {
+          id: m.id,
+          role: m.role as "user" | "assistant",
+          content: text,
+          reasoning,
+          sources: undefined,
+        };
+      });
+
+      if (stored.length === 0) return live;
+      if (live.length === 0) return stored;
+
+      // 合并历史与新增消息，避免继续对话后“历史被覆盖不显示”
+      const byId = new Map<string, DisplayMessage>();
+      const order: string[] = [];
+
+      for (const m of stored) {
+        byId.set(m.id, m);
+        order.push(m.id);
+      }
+
+      for (const m of live) {
+        const existing = byId.get(m.id);
+        if (!existing) {
+          byId.set(m.id, m);
+          order.push(m.id);
+        } else {
+          // 若同 ID 的 live 有更多信息（如 reasoning），用它补全
+          byId.set(m.id, { ...existing, ...m });
+        }
+      }
+
+      return order.map((id) => byId.get(id)!).filter(Boolean);
+    },
+    [messages, storedMessages]
+  );
 
   if (displayMessages.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <div className="space-y-4 text-center">
           <Bot className="mx-auto h-16 w-16 text-muted-foreground/30" />
-          <h2 className="text-xl font-semibold text-muted-foreground">
+          <h2 className="text-xl font-semibold text-muted-foreground text-balance">
             有什么可以帮你的？
           </h2>
           <p className="mx-auto max-w-md text-sm text-muted-foreground">
@@ -102,10 +151,10 @@ export function ChatMessages({
   }
 
   return (
-    <div className="flex flex-1 flex-col">
-      <Conversation>
-        <ConversationContent>
-          <div className="mx-auto flex w-full max-w-3xl flex-col gap-2 py-4">
+    <div className="flex flex-1 min-h-0 flex-col">
+      <Conversation className="flex-1 min-h-0">
+        <ConversationContent className="p-0">
+          <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 py-4 px-4 pb-12">
             {displayMessages.map((msg, idx) => {
               // 最后一条 assistant 消息且仍在流式时，Reasoning 保持展开状态
               const isLastAssistant =
@@ -129,12 +178,14 @@ export function ChatMessages({
               );
             })}
             {isLoading && (
-              <div className="flex items-center gap-3 px-4 py-4 text-sm text-muted-foreground">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
-                  <Loader2 className="h-4 w-4 animate-spin text-primary-foreground" />
-                </div>
-                思考中...
-              </div>
+              <Message from="assistant" key="thinking">
+                <MessageContent>
+                  <span
+                    className="inline-flex h-2 w-2 animate-pulse rounded-full bg-foreground"
+                    aria-label="思考中"
+                  />
+                </MessageContent>
+              </Message>
             )}
           </div>
         </ConversationContent>

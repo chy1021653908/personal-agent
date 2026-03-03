@@ -168,7 +168,7 @@ export function ChatInput({
   );
 
   return (
-    <div className="border-t bg-background p-4">
+    <div className="relative z-10 border-t bg-background p-4">
       <div className="mx-auto max-w-3xl space-y-3">
         <Suggestions className="px-1">
           {SUGGESTIONS.map((suggestion) => (
@@ -195,6 +195,7 @@ export function ChatInput({
                 setInput(e.target.value)
               }
               placeholder={placeholder}
+              aria-label="输入消息"
               className="px-3 py-2 text-sm"
             />
           </PromptInputBody>
