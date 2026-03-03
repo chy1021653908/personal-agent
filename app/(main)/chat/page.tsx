@@ -24,10 +24,11 @@ export default function ChatPage() {
   const { knowledgeBases } = useKnowledgeBases();
   const [selectedKbId, setSelectedKbId] = useState<string | null>(null);
 
-  const handleSend = async (content: string, _model?: string) => {
+  const handleSend = async (content: string) => {
     const convo = await createConversation(
       content.slice(0, 50),
-      selectedKbId || undefined
+      selectedKbId || undefined,
+      selectedKbId ? "knowledge_base" : "none"
     );
     router.push(`/chat/${convo.id}?q=${encodeURIComponent(content)}`);
   };

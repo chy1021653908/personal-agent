@@ -1,28 +1,18 @@
-import { openai } from "@ai-sdk/openai";
-import { embedMany, embed } from "ai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 
-const embeddingModel = openai.embedding("text-embedding-3-small");
+const baseURL = process.env.OPENAI_BASE_URL;
+const apiKey = process.env.OPENAI_API_KEY ?? process.env.AI_GATEWAY_API_KEY;
 
-export async function embedTexts(texts: string[]): Promise<number[][]> {
-  const batchSize = 100;
-  const allEmbeddings: number[][] = [];
+let embeddingsInstance: OpenAIEmbeddings | null = null;
 
-  for (let i = 0; i < texts.length; i += batchSize) {
-    const batch = texts.slice(i, i + batchSize);
-    const { embeddings } = await embedMany({
-      model: embeddingModel,
-      values: batch,
+export function getEmbeddingsModel(): OpenAIEmbeddings {
+  if (!embeddingsInstance) {
+    embeddingsInstance = new OpenAIEmbeddings({
+      model: "text-embedding-3-small",
+      apiKey,
+      ...(baseURL ? { configuration: { baseURL } } : {}),
     });
-    allEmbeddings.push(...embeddings);
   }
 
-  return allEmbeddings;
-}
-
-export async function embedQuery(text: string): Promise<number[]> {
-  const { embedding } = await embed({
-    model: embeddingModel,
-    value: text,
-  });
-  return embedding;
+  return embeddingsInstance;
 }

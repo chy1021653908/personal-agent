@@ -1,10 +1,11 @@
 import { db } from "@/lib/db";
 import { documents } from "@/lib/db/schema";
+import { Document as LangChainDocument } from "@langchain/core/documents";
+import type { Where } from "chromadb";
 import { eq } from "drizzle-orm";
 import { loadDocument, loadUrl } from "./loaders";
 import { splitText } from "./splitter";
-import { embedTexts } from "./embeddings";
-import { getOrCreateCollection } from "./chroma";
+import { createVectorStore } from "./vector-store";
 
 export async function indexDocument(documentId: string) {
   const [doc] = await db
@@ -36,26 +37,30 @@ export async function indexDocument(documentId: string) {
       throw new Error("No content extracted from document");
     }
 
-    const embeddings = await embedTexts(chunks.map((c) => c.content));
-
-    const collection = await getOrCreateCollection(doc.knowledgeBaseId);
+    const vectorStore = createVectorStore(doc.knowledgeBaseId);
+    await vectorStore.delete({
+      filter: { documentId } as Where,
+    });
 
     const batchSize = 100;
     for (let i = 0; i < chunks.length; i += batchSize) {
       const batchChunks = chunks.slice(i, i + batchSize);
-      const batchEmbeddings = embeddings.slice(i, i + batchSize);
+      const batchDocuments = batchChunks.map(
+        (chunk) =>
+          new LangChainDocument({
+            pageContent: chunk.content,
+            metadata: {
+              documentId,
+              folderId: doc.folderId || "",
+              fileName: doc.name,
+              fileType: doc.fileType,
+              chunkIndex: chunk.index,
+            },
+          })
+      );
 
-      await collection.add({
+      await vectorStore.addDocuments(batchDocuments, {
         ids: batchChunks.map((_, idx) => `${documentId}_${i + idx}`),
-        embeddings: batchEmbeddings,
-        documents: batchChunks.map((c) => c.content),
-        metadatas: batchChunks.map((c) => ({
-          documentId,
-          folderId: doc.folderId || "",
-          fileName: doc.name,
-          fileType: doc.fileType,
-          chunkIndex: c.index,
-        })),
       });
     }
 

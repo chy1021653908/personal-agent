@@ -1,6 +1,5 @@
-import { embedQuery } from "./embeddings";
-import { getOrCreateCollection } from "./chroma";
 import type { Where } from "chromadb";
+import { createVectorStore } from "./vector-store";
 
 export interface RetrievalResult {
   documentId: string;
@@ -25,9 +24,6 @@ export async function retrieve({
   scope,
   scopeId,
 }: RetrieveOptions): Promise<RetrievalResult[]> {
-  const queryEmbedding = await embedQuery(query);
-  const collection = await getOrCreateCollection(knowledgeBaseId);
-
   let whereFilter: Where | undefined;
 
   if (scope === "folder" && scopeId) {
@@ -36,25 +32,21 @@ export async function retrieve({
     whereFilter = { documentId: scopeId };
   }
 
-  const results = await collection.query({
-    queryEmbeddings: [queryEmbedding],
-    nResults: topK,
-    where: whereFilter,
-  });
+  const vectorStore = createVectorStore(knowledgeBaseId);
+  const results = await vectorStore.similaritySearchWithScore(
+    query,
+    topK,
+    whereFilter
+  );
 
-  if (
-    !results.ids[0] ||
-    !results.documents[0] ||
-    !results.metadatas[0]
-  ) {
-    return [];
-  }
-
-  return results.ids[0].map((_, i) => ({
-    documentId: (results.metadatas[0][i]?.documentId as string) || "",
-    fileName: (results.metadatas[0][i]?.fileName as string) || "",
-    chunkIndex: (results.metadatas[0][i]?.chunkIndex as number) || 0,
-    content: results.documents[0]![i] || "",
-    distance: results.distances?.[0]?.[i] || 0,
+  return results.map(([doc, score]) => ({
+    documentId: String(doc.metadata.documentId ?? ""),
+    fileName: String(doc.metadata.fileName ?? ""),
+    chunkIndex:
+      typeof doc.metadata.chunkIndex === "number"
+        ? doc.metadata.chunkIndex
+        : Number(doc.metadata.chunkIndex ?? 0),
+    content: doc.pageContent,
+    distance: score,
   }));
 }

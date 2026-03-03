@@ -24,11 +24,15 @@ export function useConversations() {
     fetchConversations();
   }, [fetchConversations]);
 
-  const createConversation = async (title?: string, knowledgeBaseId?: string) => {
+  const createConversation = async (
+    title?: string,
+    knowledgeBaseId?: string,
+    retrievalScope?: "knowledge_base" | "folder" | "document" | "none"
+  ) => {
     const res = await fetch("/api/conversations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, knowledgeBaseId }),
+      body: JSON.stringify({ title, knowledgeBaseId, retrievalScope }),
     });
     if (res.ok) {
       const conversation = await res.json();

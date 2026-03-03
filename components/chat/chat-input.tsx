@@ -57,8 +57,8 @@ const MODELS = [
   {
     chef: "OpenAI",
     chefSlug: "openai" as const,
-    id: "openai/gpt-oss-20b",
-    name: "openai/gpt-oss-20b（默认）",
+    id: "gpt-4o-mini",
+    name: "GPT-4o mini（默认，速度快）",
     providers: ["openai"],
   },
   {
@@ -71,8 +71,8 @@ const MODELS = [
   {
     chef: "OpenAI",
     chefSlug: "openai" as const,
-    id: "gpt-4o-mini",
-    name: "GPT-4o mini（更快更省）",
+    id: "openai/gpt-oss-20b",
+    name: "openai/gpt-oss-20b（需网关支持）",
     providers: ["openai"],
   },
   {

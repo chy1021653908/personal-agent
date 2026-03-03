@@ -1,7 +1,7 @@
 "use client";
 
 import { Bot } from "lucide-react";
-import type { UIMessage } from "ai";
+import type { Message as StreamMessage } from "@langchain/langgraph-sdk";
 import type { Source } from "@/types";
 import {
   Message,
@@ -28,34 +28,63 @@ interface StoredMessage {
 }
 
 interface ChatMessagesProps {
-  messages: UIMessage[];
+  messages: StreamMessage[];
   storedMessages?: StoredMessage[];
   isLoading: boolean;
 }
 
-type UIMessagePart =
-  | { type: "text"; text: string }
-  | { type: "reasoning"; text: string }
-  | { type: string; [key: string]: unknown };
+type ReasoningSummaryItem = { type?: string; text?: string };
 
-function extractFromUIMessage(msg: UIMessage): {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function extractText(content: unknown): string {
+  if (typeof content === "string") return content;
+
+  if (Array.isArray(content)) {
+    return content
+      .map((block) => {
+        if (typeof block === "string") return block;
+        if (!isRecord(block)) return "";
+        if (block.type === "text" && typeof block.text === "string") {
+          return block.text;
+        }
+        return "";
+      })
+      .join("");
+  }
+
+  if (isRecord(content) && typeof content.text === "string") {
+    return content.text;
+  }
+
+  return "";
+}
+
+function extractReasoning(message: StreamMessage): string | undefined {
+  if (!isRecord(message.additional_kwargs)) return undefined;
+
+  const maybeReasoning = message.additional_kwargs.reasoning;
+  if (!isRecord(maybeReasoning) || !Array.isArray(maybeReasoning.summary)) {
+    return undefined;
+  }
+
+  const text = (maybeReasoning.summary as ReasoningSummaryItem[])
+    .filter((item) => item.type === "summary_text" && typeof item.text === "string")
+    .map((item) => item.text)
+    .join("");
+
+  return text || undefined;
+}
+
+function extractFromStreamMessage(msg: StreamMessage): {
   text: string;
   reasoning?: string;
 } {
-  let text = "";
-  let reasoning = "";
-
-  for (const raw of msg.parts as UIMessagePart[]) {
-    if (raw.type === "text") {
-      text += raw.text;
-    } else if (raw.type === "reasoning") {
-      reasoning += raw.text;
-    }
-  }
-
   return {
-    text,
-    reasoning: reasoning || undefined,
+    text: extractText(msg.content),
+    reasoning: extractReasoning(msg),
   };
 }
 
@@ -95,16 +124,21 @@ export function ChatMessages({
             sources: m.sources ?? null,
           })) ?? [];
 
-      const live: DisplayMessage[] = messages.map((m) => {
-        const { text, reasoning } = extractFromUIMessage(m);
-        return {
-          id: m.id,
-          role: m.role as "user" | "assistant",
-          content: text,
-          reasoning,
-          sources: undefined,
-        };
-      });
+      const live: DisplayMessage[] = messages
+        .filter(
+          (m): m is StreamMessage & { type: "human" | "ai" } =>
+            m.type === "human" || m.type === "ai"
+        )
+        .map((m, index) => {
+          const { text, reasoning } = extractFromStreamMessage(m);
+          return {
+            id: m.id ?? `live-${index}`,
+            role: m.type === "human" ? "user" : "assistant",
+            content: text,
+            reasoning,
+            sources: undefined,
+          };
+        });
 
       if (stored.length === 0) return live;
       if (live.length === 0) return stored;
