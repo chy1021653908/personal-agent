@@ -1,0 +1,247 @@
+{
+  "common": {
+    "loading": "加载中…",
+    "user": "用户",
+    "placeholderEmail": "—",
+    "source": "来源",
+    "webPage": "网页",
+    "document": "文档",
+    "searching": "搜索中",
+    "references": "来源",
+    "complete": "完成",
+    "copy": "复制",
+    "reasoning": {
+      "thinking": "正在思考...",
+      "fewSeconds": "思考了几秒",
+      "seconds": "思考了 {duration} 秒"
+    },
+    "language": {
+      "switch": "切换语言",
+      "zh": "中文",
+      "en": "English"
+    },
+    "deleteDialog": {
+      "confirm": "删除",
+      "cancel": "取消"
+    }
+  },
+  "sidebar": {
+    "group": {
+      "today": "今天",
+      "yesterday": "昨天",
+      "last7Days": "最近 7 天",
+      "older": "更早"
+    },
+    "nav": {
+      "chat": "对话",
+      "knowledgeBase": "知识库",
+      "webSearch": "联网检索"
+    },
+    "actions": {
+      "newChat": "新对话",
+      "newWebSearch": "新检索",
+      "searchChat": "搜索对话",
+      "searchWebSearch": "搜索检索记录",
+      "more": "更多"
+    },
+    "menu": {
+      "deleteConversation": "删除对话",
+      "deleteRecord": "删除记录"
+    },
+    "confirm": {
+      "deleteConversationTitle": "删除对话？",
+      "deleteConversationDescription": "对话「{title}」删除后将无法恢复。",
+      "deleteConversationConfirm": "删除对话",
+      "deleteWebSearchTitle": "删除检索记录？",
+      "deleteWebSearchDescription": "检索记录「{title}」删除后将无法恢复。",
+      "deleteWebSearchConfirm": "删除记录"
+    }
+  },
+  "navUser": {
+    "logout": "退出登录"
+  },
+  "auth": {
+    "login": {
+      "title": "登录你的账户",
+      "description": "输入邮箱和密码继续",
+      "email": "邮箱",
+      "password": "密码",
+      "submit": "登录",
+      "google": "使用 Google 登录",
+      "noAccount": "还没有账户？",
+      "signUp": "注册",
+      "errors": {
+        "loginFailed": "登录失败",
+        "loginFailedRetry": "登录失败，请重试",
+        "googleFailed": "Google 登录失败",
+        "googleFailedRetry": "Google 登录失败，请重试"
+      }
+    },
+    "register": {
+      "title": "注册",
+      "description": "创建一个新账户开始使用",
+      "name": "名称",
+      "namePlaceholder": "你的名称",
+      "email": "邮箱",
+      "password": "密码",
+      "passwordPlaceholder": "至少 8 位",
+      "confirmPassword": "确认密码",
+      "confirmPasswordPlaceholder": "再次输入密码",
+      "submit": "注册",
+      "hasAccount": "已有账户？",
+      "login": "登录",
+      "errors": {
+        "passwordMismatch": "两次输入的密码不一致",
+        "passwordMinLength": "密码长度至少 8 位",
+        "registerFailed": "注册失败",
+        "registerFailedRetry": "注册失败，请重试"
+      }
+    }
+  },
+  "chat": {
+    "breadcrumb": "对话",
+    "messages": {
+      "sourceAvatarFallback": "文",
+      "sourceLabel": "来源 {index}",
+      "toolCall": "工具调用",
+      "retrievalInProgress": "正在检索",
+      "retrievalDone": "检索完成",
+      "thoughtProcess": "正在思考",
+      "typingAria": "正在生成回复",
+      "emptyStateTitle": "有什么可以帮你的？"
+    },
+    "input": {
+      "placeholder": "输入消息...",
+      "suggestions": {
+        "hello": "你好",
+        "latestAiNews": "帮我搜索最新的 AI 新闻"
+      },
+      "addContext": "添加上下文",
+      "search": "搜索",
+      "searchModel": "搜索模型...",
+      "knowledgeBases": "知识库",
+      "emptyKnowledgeBase": "暂无知识库",
+      "textAria": "输入消息",
+      "defaultModelName": "MiniMax-M2.5（默认）"
+    }
+  },
+  "webSearch": {
+    "breadcrumb": "联网检索",
+    "untitledThread": "未命名检索",
+    "landingPlaceholder": "输入要检索的问题，将使用 LangGraph 工作流作答…",
+    "threadPlaceholder": "继续追问（同一 thread 内可多轮）…",
+    "messages": {
+      "defaultPlanTitle": "联网检索",
+      "thinking": "正在思考",
+      "thoughtComplete": "思考完成",
+      "generatingAria": "正在生成回答"
+    }
+  },
+  "knowledge": {
+    "breadcrumb": "知识库",
+    "page": {
+      "title": "知识库",
+      "description": "管理你的文档集合，用于 AI 智能问答",
+      "createKnowledgeBase": "创建知识库",
+      "createDialogTitle": "创建知识库",
+      "name": "名称",
+      "namePlaceholder": "例如：公司文档",
+      "create": "创建",
+      "loading": "加载中...",
+      "emptyTitle": "暂无知识库",
+      "emptyDescription": "创建一个知识库来开始管理你的文档。你可以上传 PDF、Markdown 等文件。",
+      "documentCount": "{count} 文档",
+      "deleteTitle": "删除知识库？",
+      "deleteDescription": "知识库「{name}」及其关联文档会被永久删除。",
+      "deleteConfirm": "删除知识库"
+    },
+    "detail": {
+      "loadingName": "加载中...",
+      "fallbackName": "知识库",
+      "createFolder": "创建文件夹",
+      "uploadDocument": "上传文档",
+      "renameFolderPrompt": "重命名文件夹",
+      "toasts": {
+        "processStarted": "已开始处理文档，状态将自动刷新",
+        "processFailed": "文档处理失败",
+        "documentDeleted": "文档已删除",
+        "deleteFailed": "删除失败",
+        "folderCreated": "文件夹已创建",
+        "createFolderFailed": "创建文件夹失败",
+        "folderRenamed": "文件夹已重命名",
+        "renameFailed": "重命名失败",
+        "uploadSuccess": "{name} 上传成功",
+        "folderDeleted": "文件夹已删除"
+      },
+      "createFolderDialog": {
+        "title": "创建文件夹",
+        "name": "名称",
+        "namePlaceholder": "例如：产品方案",
+        "cancel": "取消",
+        "create": "创建"
+      },
+      "deleteFolder": {
+        "title": "删除文件夹？",
+        "description": "文件夹「{name}」及其子文件夹、文档会被永久删除。",
+        "confirm": "删除文件夹"
+      },
+      "deleteDocument": {
+        "title": "删除文档？",
+        "description": "文档「{name}」删除后将无法恢复。",
+        "confirm": "删除文档"
+      }
+    },
+    "fileGrid": {
+      "status": {
+        "pending": "待处理",
+        "processing": "处理中",
+        "ready": "就绪",
+        "error": "错误"
+      },
+      "emptyTitle": "暂无文档",
+      "emptyDescription": "上传文件开始构建知识库",
+      "rename": "重命名",
+      "delete": "删除",
+      "process": "处理文档",
+      "retryProcess": "重新处理",
+      "documentCount": "{count} 文档"
+    },
+    "uploadDialog": {
+      "title": "上传文档",
+      "dragAndDrop": "拖拽文件到此处",
+      "supportedFormats": "支持 PDF, TXT, Markdown, DOCX, XLSX",
+      "selectFile": "选择文件",
+      "cancel": "取消",
+      "upload": "上传 ({count})",
+      "uploading": "上传中..."
+    }
+  },
+  "pendingApproval": {
+    "title": "需要人工确认",
+    "description": "该操作需要你的批准才能继续。",
+    "toolLabel": "工具：",
+    "rejectReasonPlaceholder": "拒绝原因（可选）",
+    "saveAndContinue": "保存并继续",
+    "cancel": "取消",
+    "allow": "允许",
+    "edit": "编辑",
+    "reject": "拒绝",
+    "defaultRejectReason": "用户拒绝执行该操作"
+  },
+  "sourceCitation": {
+    "label": "引用来源:"
+  },
+  "dashboard": {
+    "allInboxes": "全部收件箱",
+    "inbox": "收件箱"
+  },
+  "nav": {
+    "platform": "平台",
+    "projects": "项目",
+    "viewProject": "查看项目",
+    "shareProject": "分享项目",
+    "deleteProject": "删除项目",
+    "teams": "团队",
+    "addTeam": "添加团队"
+  }
+}

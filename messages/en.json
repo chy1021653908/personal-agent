@@ -1,0 +1,247 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "user": "User",
+    "placeholderEmail": "—",
+    "source": "Source",
+    "webPage": "Web",
+    "document": "Document",
+    "searching": "Searching",
+    "references": "Sources",
+    "complete": "Completed",
+    "copy": "Copy",
+    "reasoning": {
+      "thinking": "Thinking...",
+      "fewSeconds": "Thought for a few seconds",
+      "seconds": "Thought for {duration} seconds"
+    },
+    "language": {
+      "switch": "Switch language",
+      "zh": "中文",
+      "en": "English"
+    },
+    "deleteDialog": {
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "sidebar": {
+    "group": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7Days": "Last 7 Days",
+      "older": "Older"
+    },
+    "nav": {
+      "chat": "Chat",
+      "knowledgeBase": "Knowledge base",
+      "webSearch": "Web search"
+    },
+    "actions": {
+      "newChat": "New chat",
+      "newWebSearch": "New chat",
+      "searchChat": "Search chats",
+      "searchWebSearch": "Search chats",
+      "more": "More"
+    },
+    "menu": {
+      "deleteConversation": "Delete conversation",
+      "deleteRecord": "Delete record"
+    },
+    "confirm": {
+      "deleteConversationTitle": "Delete conversation?",
+      "deleteConversationDescription": "Conversation \"{title}\" will be permanently deleted.",
+      "deleteConversationConfirm": "Delete conversation",
+      "deleteWebSearchTitle": "Delete search record?",
+      "deleteWebSearchDescription": "Search record \"{title}\" will be permanently deleted.",
+      "deleteWebSearchConfirm": "Delete record"
+    }
+  },
+  "navUser": {
+    "logout": "Log out"
+  },
+  "auth": {
+    "login": {
+      "title": "Login to your account",
+      "description": "Enter your email and password to continue",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Login",
+      "google": "Login with Google",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "errors": {
+        "loginFailed": "Login failed",
+        "loginFailedRetry": "Login failed, please try again",
+        "googleFailed": "Google login failed",
+        "googleFailedRetry": "Google login failed, please try again"
+      }
+    },
+    "register": {
+      "title": "Sign up",
+      "description": "Create a new account to get started",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "password": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Enter your password again",
+      "submit": "Sign up",
+      "hasAccount": "Already have an account?",
+      "login": "Login",
+      "errors": {
+        "passwordMismatch": "The two passwords do not match",
+        "passwordMinLength": "Password must be at least 8 characters",
+        "registerFailed": "Sign-up failed",
+        "registerFailedRetry": "Sign-up failed, please try again"
+      }
+    }
+  },
+  "chat": {
+    "breadcrumb": "Chat",
+    "messages": {
+      "sourceAvatarFallback": "DO",
+      "sourceLabel": "Source {index}",
+      "toolCall": "Tool call",
+      "retrievalInProgress": "Retrieving",
+      "retrievalDone": "Retrieved",
+      "thoughtProcess": "Reasoning",
+      "typingAria": "Generating response",
+      "emptyStateTitle": "How can I help?"
+    },
+    "input": {
+      "placeholder": "Type a message...",
+      "suggestions": {
+        "hello": "Hello",
+        "latestAiNews": "Find the latest AI news"
+      },
+      "addContext": "Add context",
+      "search": "Search",
+      "searchModel": "Search models...",
+      "knowledgeBases": "Knowledge Bases",
+      "emptyKnowledgeBase": "No knowledge bases",
+      "textAria": "Message input",
+      "defaultModelName": "MiniMax-M2.5 (Default)"
+    }
+  },
+  "webSearch": {
+    "breadcrumb": "Web Search",
+    "untitledThread": "Untitled search",
+    "landingPlaceholder": "Ask something to search, and LangGraph workflow will answer…",
+    "threadPlaceholder": "Ask follow-up questions (multi-turn in one thread)…",
+    "messages": {
+      "defaultPlanTitle": "Web search",
+      "thinking": "Thinking",
+      "thoughtComplete": "Thinking complete",
+      "generatingAria": "Generating answer"
+    }
+  },
+  "knowledge": {
+    "breadcrumb": "Knowledge Base",
+    "page": {
+      "title": "Knowledge Base",
+      "description": "Manage your document collections for AI Q&A",
+      "createKnowledgeBase": "Create Knowledge Base",
+      "createDialogTitle": "Create Knowledge Base",
+      "name": "Name",
+      "namePlaceholder": "e.g. Company Docs",
+      "create": "Create",
+      "loading": "Loading...",
+      "emptyTitle": "No knowledge bases yet",
+      "emptyDescription": "Create a knowledge base to start managing documents. You can upload PDF, Markdown and more.",
+      "documentCount": "{count} docs",
+      "deleteTitle": "Delete knowledge base?",
+      "deleteDescription": "Knowledge base \"{name}\" and all related documents will be permanently deleted.",
+      "deleteConfirm": "Delete knowledge base"
+    },
+    "detail": {
+      "loadingName": "Loading...",
+      "fallbackName": "Knowledge Base",
+      "createFolder": "Create Folder",
+      "uploadDocument": "Upload Document",
+      "renameFolderPrompt": "Rename folder",
+      "toasts": {
+        "processStarted": "Document processing started. Status will refresh automatically.",
+        "processFailed": "Document processing failed",
+        "documentDeleted": "Document deleted",
+        "deleteFailed": "Delete failed",
+        "folderCreated": "Folder created",
+        "createFolderFailed": "Failed to create folder",
+        "folderRenamed": "Folder renamed",
+        "renameFailed": "Rename failed",
+        "uploadSuccess": "{name} uploaded successfully",
+        "folderDeleted": "Folder deleted"
+      },
+      "createFolderDialog": {
+        "title": "Create Folder",
+        "name": "Name",
+        "namePlaceholder": "e.g. Product Plans",
+        "cancel": "Cancel",
+        "create": "Create"
+      },
+      "deleteFolder": {
+        "title": "Delete folder?",
+        "description": "Folder \"{name}\" and its subfolders/documents will be permanently deleted.",
+        "confirm": "Delete folder"
+      },
+      "deleteDocument": {
+        "title": "Delete document?",
+        "description": "Document \"{name}\" cannot be recovered after deletion.",
+        "confirm": "Delete document"
+      }
+    },
+    "fileGrid": {
+      "status": {
+        "pending": "Pending",
+        "processing": "Processing",
+        "ready": "Ready",
+        "error": "Error"
+      },
+      "emptyTitle": "No documents",
+      "emptyDescription": "Upload files to start building your knowledge base",
+      "rename": "Rename",
+      "delete": "Delete",
+      "process": "Process document",
+      "retryProcess": "Retry processing",
+      "documentCount": "{count} docs"
+    },
+    "uploadDialog": {
+      "title": "Upload Documents",
+      "dragAndDrop": "Drag files here",
+      "supportedFormats": "Supported: PDF, TXT, Markdown, DOCX, XLSX",
+      "selectFile": "Select files",
+      "cancel": "Cancel",
+      "upload": "Upload ({count})",
+      "uploading": "Uploading..."
+    }
+  },
+  "pendingApproval": {
+    "title": "Approval required",
+    "description": "This action needs your approval to continue.",
+    "toolLabel": "Tool:",
+    "rejectReasonPlaceholder": "Reason for rejection (optional)",
+    "saveAndContinue": "Save and continue",
+    "cancel": "Cancel",
+    "allow": "Allow",
+    "edit": "Edit",
+    "reject": "Reject",
+    "defaultRejectReason": "User rejected this operation"
+  },
+  "sourceCitation": {
+    "label": "Sources:"
+  },
+  "dashboard": {
+    "allInboxes": "All Inboxes",
+    "inbox": "Inbox"
+  },
+  "nav": {
+    "platform": "Platform",
+    "projects": "Projects",
+    "viewProject": "View Project",
+    "shareProject": "Share Project",
+    "deleteProject": "Delete Project",
+    "teams": "Teams",
+    "addTeam": "Add Team"
+  }
+}
