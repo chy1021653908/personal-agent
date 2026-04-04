@@ -52,9 +52,6 @@ function sourceHost(source: Source): string | null {
 function getSourceFaviconUrl(source: Source): string | null {
   if (source.source !== "web") return null;
 
-  const explicitFaviconUrl = source.sourceFaviconUrl?.trim();
-  if (explicitFaviconUrl) return explicitFaviconUrl;
-
   const host = sourceHost(source);
   if (!host) return null;
   return `https://www.google.com/s2/favicons?sz=128&domain=${encodeURIComponent(host)}`;

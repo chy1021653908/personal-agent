@@ -54,6 +54,13 @@ function parseEnableWebSearchFlag(value: unknown): boolean | undefined {
   return undefined;
 }
 
+function parseModelProvider(
+  value: unknown,
+): "openai" | "anthropic" | undefined {
+  if (value === "openai" || value === "anthropic") return value;
+  return undefined;
+}
+
 export type NormalizedWebSearchBody = {
   query: string;
   model?: string;
@@ -88,7 +95,7 @@ export function normalizeWebSearchRequest(
     return {
       query: raw.query.trim(),
       model: typeof raw.model === "string" ? raw.model.trim() : undefined,
-      modelProvider: raw.modelProvider,
+      modelProvider: parseModelProvider(raw.modelProvider),
       checkpointThreadId: merged || undefined,
       enableWebSearch,
     };
@@ -107,7 +114,7 @@ export function normalizeWebSearchRequest(
     context && typeof context.model === "string"
       ? context.model.trim()
       : undefined;
-  const modelProvider = context?.modelProvider;
+  const modelProvider = parseModelProvider(context?.modelProvider);
   const enableWebSearch =
     parseEnableWebSearchFlag(context?.enableWebSearch) ?? false;
 
