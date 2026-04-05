@@ -97,13 +97,14 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6 w-full max-w-lg", className)} {...props}>
+    <div
+      className={cn("flex flex-col gap-6 w-full max-w-lg", className)}
+      {...props}
+    >
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">{t("auth.login.title")}</CardTitle>
-          <CardDescription>
-            {t("auth.login.description")}
-          </CardDescription>
+          <CardDescription>{t("auth.login.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>

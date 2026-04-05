@@ -54,7 +54,9 @@ export function RegisterForm({
         password,
       });
       if (result.error) {
-        setError(result.error.message || t("auth.register.errors.registerFailed"));
+        setError(
+          result.error.message || t("auth.register.errors.registerFailed"),
+        );
       } else {
         router.push("/chat");
         router.refresh();
@@ -67,7 +69,10 @@ export function RegisterForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6 w-full max-w-lg", className)} {...props}>
+    <div
+      className={cn("flex flex-col gap-6 w-full max-w-lg", className)}
+      {...props}
+    >
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl text-center font-bold">

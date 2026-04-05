@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 
 const publicPaths = ["/login", "/register", "/api/auth", "/api/locale"];
 
@@ -9,8 +10,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const sessionToken =
-    request.cookies.get("better-auth.session_token")?.value;
+  /** HTTPS 生产环境 Cookie 名为 `__Secure-better-auth.session_token`，与本地 `better-auth.session_token` 不同 */
+  const sessionToken = getSessionCookie(request);
 
   if (!sessionToken && !pathname.startsWith("/api")) {
     return NextResponse.redirect(new URL("/login", request.url));
