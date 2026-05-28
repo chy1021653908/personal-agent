@@ -5,6 +5,11 @@ chat, document-grounded answers, and web research.
 
 [中文文档](./README.zh-CN.md) | English
 
+<img width="1080" height="583" alt="image" src="https://github.com/user-attachments/assets/4d22064e-a233-4e44-9d94-55d6d071d86b" />
+<img width="1080" height="583" alt="image" src="https://github.com/user-attachments/assets/93e51f81-c519-4c17-8ab5-dcdca54c4844" />
+<img width="1080" height="583" alt="image" src="https://github.com/user-attachments/assets/41a67ffa-bfb8-4333-aa47-8bacc9040524" />
+<img width="1080" height="583" alt="image" src="https://github.com/user-attachments/assets/c7b06655-a95d-4522-ad33-c4255c046267" />
+
 ## What It Does
 
 Personal Agent helps you:
